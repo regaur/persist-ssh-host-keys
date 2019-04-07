@@ -1,0 +1,31 @@
+#!/usr/bin/bash
+set -ex
+
+src="$1"
+dest="$2"
+action="${3:-move}"
+
+files=(
+  'ssh_host_dsa_key'
+  'ssh_host_dsa_key.pub'
+  'ssh_host_ecdsa_key'
+  'ssh_host_ecdsa_key.pub'
+  'ssh_host_ed25519_key'
+  'ssh_host_ed25519_key.pub'
+  'ssh_host_rsa_key'
+  'ssh_host_rsa_key.pub'
+)
+mkdir -p "$dest"
+
+if [[ "${action}" == move ]]; then
+  for file in "${files[@]}"; do
+    mv "${src}/${file}" "${dest}/${file}"
+    ln -s ${dest}/${file} ${src}/${file}
+  done
+fi
+
+if [[ "${action}" == revert ]]; then
+  for file in "${files[@]}"; do
+    mv ${dest}/${file} ${src}/${file}
+  done
+fi

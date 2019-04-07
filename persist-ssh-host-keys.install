@@ -1,0 +1,10 @@
+service_name=persist-ssh-host-keys.service
+
+post_install () {
+  systemctl enable "$service_name"
+}
+
+pre_remove () {
+  systemctl disable "$service_name"
+}
+

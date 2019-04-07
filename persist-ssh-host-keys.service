@@ -1,0 +1,10 @@
+[Unit]
+Description=stores ssh host keys under /var/ssh/host-keys instead of /etc/ssh
+After=sshdgenkeys.service
+Before=sshd.service
+
+[Service]
+ExecStart=/usr/bin/persist-ssh-keys /etc/ssh /var/ssh/host-keys
+ExecStop=/usr/bin/persist-ssh-keys /etc/ssh /var/ssh/host-keys revert
+Type=oneshot
+RemainAfterExit=yes
